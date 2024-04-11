@@ -62,7 +62,7 @@ docker compose up -d
 - cd /etc/nginx/sites-available
 - sudo vi chatwoot
 ```
-# Configuration for Jenkins
+# Configuration for chatwoot
 server {
     listen 80;
     server_name chatwoot.murali.world;
@@ -87,6 +87,8 @@ server {
 - sudo apt install python3-certbot-nginx -y
 - certbot --version
 - sudo certbot --nginx -d chatwoot.murali.world
+  - email: murali@digital-edify.com
+  - redirect all traffic to https: 2
 
 ## Chatwoot Login Details
 

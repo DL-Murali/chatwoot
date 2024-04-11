@@ -12,6 +12,7 @@ services:
     depends_on:
       - postgres
       - redis
+    container_name: rails
     ports:
       - '127.0.0.1:3000:3000'
     environment:
@@ -26,6 +27,7 @@ services:
     depends_on:
       - postgres
       - redis
+    container_name: sidekiq
     environment:
       - NODE_ENV=production
       - RAILS_ENV=production
@@ -35,6 +37,7 @@ services:
   postgres:
     image: postgres:12
     restart: always
+    container_name: postgres
     ports:
       - '127.0.0.1:5432:5432'
     volumes:
@@ -48,6 +51,7 @@ services:
   redis:
     image: redis:alpine
     restart: always
+    container_name: redis
     command: ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\""]
     env_file: .env
     volumes:
