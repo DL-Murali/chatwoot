@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   base: &base
     image: chatwoot/chatwoot:latest
@@ -12,49 +10,47 @@ services:
     depends_on:
       - postgres
       - redis
-    container_name: rails
     ports:
-      - '127.0.0.1:3000:3000'
+      - '3000:3000'
     environment:
       - NODE_ENV=production
       - RAILS_ENV=production
       - INSTALLATION_ENV=docker
     entrypoint: docker/entrypoints/rails.sh
     command: ['bundle', 'exec', 'rails', 's', '-p', '3000', '-b', '0.0.0.0']
+    restart: always
 
   sidekiq:
     <<: *base
     depends_on:
       - postgres
       - redis
-    container_name: sidekiq
     environment:
       - NODE_ENV=production
       - RAILS_ENV=production
       - INSTALLATION_ENV=docker
     command: ['bundle', 'exec', 'sidekiq', '-C', 'config/sidekiq.yml']
+    restart: always
 
   postgres:
     image: postgres:12
     restart: always
-    container_name: postgres
     ports:
-      - '127.0.0.1:5432:5432'
+      - '5432:5432'
     volumes:
       - /data/postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=chatwoot
       - POSTGRES_USER=postgres
       # Please provide your own password.
-      - POSTGRES_PASSWORD=Chatwoot!234
+      - POSTGRES_PASSWORD=Postgress@Password123
 
   redis:
     image: redis:alpine
     restart: always
-    container_name: redis
     command: ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\""]
     env_file: .env
     volumes:
       - /data/redis:/data
     ports:
-      - '127.0.0.1:6379:6379'
+      - '6379:6379'
